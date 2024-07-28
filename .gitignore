@@ -1,0 +1,13 @@
+# Ignore IDE configuration
+.DS_STORE
+.idea/
+.vscode/
+
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore node modules
+/node_modules

@@ -1,0 +1,15 @@
+[submodule "zacatzontli"]
+	path = zacatzontli
+	url = git@github.com:huasteka/zacatzontli.git
+[submodule "tepoztecatl"]
+	path = tepoztecatl
+	url = git@github.com:huasteka/tepoztecatl.git
+[submodule "yacatecuhtli"]
+	path = yacatecuhtli
+	url = git@github.com:huasteka/yacatecuhtli.git
+[submodule "huitzilopochtli"]
+	path = huitzilopochtli
+	url = git@github.com:huasteka/huitzilopochtli.git
+[submodule "tezcatlipoca"]
+	path = tezcatlipoca
+	url = git@github.com:huasteka/tezcatlipoca.git

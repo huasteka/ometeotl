@@ -1,0 +1,103 @@
+services:
+  app-view:
+    build:
+      context: ./tezcatlipoca
+      dockerfile: Dockerfile
+    ports:
+      - "9700:8080"
+    networks:
+      - shared-vpc
+    depends_on:
+      - app-auth
+      - app-storage
+      - app-finance
+      - app-sales
+
+  app-auth:
+    build:
+      context: ./zacatzontli
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgres://root:root@postgres-db:5432/app_auth
+    ports:
+      - "9701:1337"
+    networks:
+      - shared-vpc
+    depends_on:
+      - postgres-db
+
+  app-storage:
+    build: 
+      context: ./tepoztecatl
+      dockerfile: Dockerfile
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_HOST=postgres-db
+      - DATABASE_NAME=app_storage
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
+    ports:
+      - "9702:3000"
+    networks:
+      - shared-vpc
+    depends_on:
+      - postgres-db
+
+  app-finance:
+    build: 
+      context: ./yacatecuhtli
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/app_finance
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "9703:9703"
+    networks:
+      - shared-vpc
+    depends_on:
+      - postgres-db
+
+  app-sales:
+    build:
+      context: ./huitzilopochtli
+      dockerfile: Dockerfile
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres-db
+      - DB_PORT=5432
+      - DB_DATABASE=app_sales
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    ports:
+      - "9704:9704"
+    networks:
+      - shared-vpc
+    depends_on:
+      - postgres-db
+  
+  postgres-db:
+    image: postgres:9.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - "5432:5432"
+    volumes:
+      - shared-disk:/var/lib/postgresql/data
+      - ./db-migration/init.sh:/docker-entrypoint-initdb.d/init.sh
+    networks:
+      - shared-vpc
+
+volumes:
+  shared-disk:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /tmp/docker-volume
+
+networks:
+  shared-vpc:
+    driver: bridge
