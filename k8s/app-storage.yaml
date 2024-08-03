@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-storage-config
+  labels:
+    app: app-storage
+data:
+  RAILS_ENV: development
+  DATABASE_HOST: postgres-db
+  DATABASE_NAME: app_storage
+  DATABASE_USERNAME: huasteka
+  DATABASE_PASSWORD: Q5yXSuuKVHlukd4
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-storage
+  template:
+    metadata:
+      labels:
+        app: app-storage
+    spec:
+      containers:
+        - name: app-storage
+          image: murilocosta/huasteka-tepoztecatl
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: app-storage-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-storage
+  labels:
+    app: app-storage
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 9702
+      targetPort: 3000
+  selector:
+    app: app-storage

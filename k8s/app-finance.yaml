@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-finance-config
+  labels:
+    app: app-finance
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/app_finance
+  SPRING_DATASOURCE_USERNAME: huasteka
+  SPRING_DATASOURCE_PASSWORD: Q5yXSuuKVHlukd4
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-finance
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-finance
+  template:
+    metadata:
+      labels:
+        app: app-finance
+    spec:
+      containers:
+        - name: app-finance
+          image: murilocosta/huasteka-yacatecuhtli
+          ports:
+            - containerPort: 9703
+          envFrom:
+            - configMapRef:
+                name: app-finance-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-finance
+  labels:
+    app: app-finance
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 9703
+      targetPort: 9703
+  selector:
+    app: app-finance
