@@ -1,6 +1,9 @@
 docker build --no-cache ./huitzilopochtli -t murilocosta/huasteka-huitzilopochtli:latest
 docker push -a murilocosta/huasteka-huitzilopochtli
 
+docker build --no-cache ./pahtecatl -t murilocosta/huasteka-pahtecatl:latest
+docker push -a murilocosta/huasteka-pahtecatl
+
 docker build --no-cache ./tepoztecatl -t murilocosta/huasteka-tepoztecatl:latest
 docker push -a murilocosta/huasteka-tepoztecatl
 

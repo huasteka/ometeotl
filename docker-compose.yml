@@ -8,6 +8,22 @@ services:
     networks:
       - shared-vpc
     depends_on:
+      - app-gateway
+
+  app-gateway:
+    build:
+      context: ./pahtecatl
+      dockerfile: Dockerfile
+    environment:
+      - APP_SERVICES_AUTH_TARGET_SERVICE="http://app-auth:1337"
+      - APP_SERVICES_FINANCE_TARGET_SERVICE="http://app-finance:9703"
+      - APP_SERVICES_SALES_TARGET_SERVICE="http://app-sales:9704"
+      - APP_SERVICES_STORAGE_TARGET_SERVICE="http://app-storage:3000"
+    ports:
+      - "9705:9705"
+    networks:
+      - shared-vpc
+    depends_on:
       - app-auth
       - app-storage
       - app-finance

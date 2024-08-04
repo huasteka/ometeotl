@@ -13,3 +13,6 @@
 [submodule "tezcatlipoca"]
 	path = tezcatlipoca
 	url = git@github.com:huasteka/tezcatlipoca.git
+[submodule "pahtecatl"]
+	path = pahtecatl
+	url = git@github.com:huasteka/pahtecatl.git
